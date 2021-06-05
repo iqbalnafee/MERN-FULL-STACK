@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const gravatar = require('gravatar');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken'); //jwt.io for documentation
+const config = require('config');
 
 //we need to require our model 
 
@@ -67,8 +69,24 @@ async (req,res) => {
 
         //return jsonwebtoken
 
+        const payload = {
 
-        res.send('User registered');
+            user:{
+                id:user.id
+            }
+        };
+        jwt.sign(
+            payload,
+            config.get('jwtSecret'),//second param is jwt secret
+            {expiresIn:3600000},
+            (err,token) => {
+                if(err) throw err;
+                res.json({token});
+            }
+            )
+
+
+        //res.send('User registered');
 
     }
     catch(error){
