@@ -7,6 +7,10 @@ const app = express();
 
 connectDB();
 
+//Init Middleware
+
+app.use(express.json({extended:false})); //this line allow us to get data in request.body in routes/api/users
+
 
 app.get('/',(req,res) => {
     res.send('HELLO WORLD!!!');
