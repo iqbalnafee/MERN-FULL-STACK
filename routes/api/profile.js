@@ -177,7 +177,7 @@ router.get('/user/:user_id', async (req,res) => {
 //@desc   DELETE user,profile and posts
 //@access private
 
-router.post('/delete', async (req,res) => {
+router.post('/delete',auth, async (req,res) => {
 
 
     try {
