@@ -3,7 +3,7 @@ const router = express.Router();
 
 const auth = require('../../middleware/auth');
 
-const Profile = require('../../models/Profile'); //it gives us the whole table 
+const Profile = require('../../models/Profile'); //it will gives us the whole table 
 const User = require('../../models/User');
 
 const { check,validationResult } = require('express-validator');
@@ -119,5 +119,89 @@ router.post('/',[auth,[
       res.send('Hello');
 
 });
+
+//@route  GET api/profile
+//@desc   Get all profiles
+//@access public
+
+router.get('/', async (req,res) => {
+
+
+    try {
+
+        const profiles = await Profile.find().populate('user',['name','avatar']);
+        return res.json(profiles);
+        //console.log(profiles);
+    
+    } catch (error) {
+        console.error(error.message);
+        //res.send('Server Error');
+    }
+});
+
+
+//@route  GET api/profile/user/:user_id //use : cause it will act as placeholder
+//@desc   Get profile by user id
+//@access public
+
+router.get('/user/:user_id', async (req,res) => {
+
+
+    try {
+
+        const profile = await Profile.findOne({user : req.params.user_id}).populate('user',['name','avatar']);
+
+        if(!profile){
+            return res.status(400).json({msg:'There is no profile of this user'});
+        }
+
+        return res.json(profile);
+        //console.log(profiles);
+    
+    } catch (error) {
+        
+        console.error(error.message);
+
+        if(error.kind === 'ObjectId'){
+            return res.status(400).json({msg:'There is no profile of this user'}); 
+        }
+
+        res.status(400).send('Server Error');
+
+
+
+    }
+});
+
+//@route  DELETE api/profile
+//@desc   DELETE user,profile and posts
+//@access private
+
+router.post('/delete', async (req,res) => {
+
+
+    try {
+
+
+        //delete posts
+
+        //delete profile
+        await Profile.findOneAndRemove({user:req.user.id});
+
+        //delete user
+
+        await User.findOneAndRemove({_id:req.user.id});
+
+        return res.json({msg:'User removed'});
+        //console.log(profiles);
+    
+    } catch (error) {
+        console.error(error.message);
+        //res.send('Server Error');
+    }
+});
+
+
+
 
 module.exports = router
