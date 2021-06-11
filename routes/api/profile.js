@@ -201,6 +201,64 @@ router.post('/delete',auth, async (req,res) => {
     }
 });
 
+//@route  PUT api/profile/experience
+//@desc   Add profile experience
+//@access private
+
+router.put('/experience',[auth,[
+    check('title','Title is required').not().isEmpty(),
+    check('company','Company is required').not().isEmpty(),
+    check('from','From date is required').not().isEmpty()
+]], async (req,res) => {// 2nd parameter is always middleware.To use multiple middleware we will use []
+
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors : errors.array()});
+    }
+
+    //destructure the request body
+
+    const {
+        title,
+        company,
+        location,
+        from,
+        to,
+        current,
+        description
+    } = req.body;
+
+    //newExp is same as profileFields
+    const newExp = {
+            title,
+            company,
+            location,
+            from,
+            to,
+            current,
+            description
+    };
+
+    try {
+
+        const profile = await Profile.findOne({user:req.user.id});//finnOne function object desc= columnName:value
+        
+        //profile.experience.push() we will not use it since it push at the begining
+        //we will use
+
+        profile.experience.unshift(newExp); //it push at the end
+        await profile.save();
+        res.json(profile);
+        
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+
+
+});
+
 
 
 
