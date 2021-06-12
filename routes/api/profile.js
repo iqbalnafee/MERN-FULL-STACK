@@ -186,7 +186,7 @@ router.post('/delete',auth, async (req,res) => {
         //delete posts
 
         //delete profile
-        await Profile.findOneAndRemove({user:req.user.id});
+        await Profile.findOneAndRemove({user:req.user.id}); //it is an column not array of objects
 
         //delete user
 
@@ -242,7 +242,7 @@ router.put('/experience',[auth,[
 
     try {
 
-        const profile = await Profile.findOne({user:req.user.id});//finnOne function object desc= columnName:value
+        const profile = await Profile.findOne({user:req.user.id});//findOne function object desc= columnName:value
         
         //profile.experience.push() we will not use it since it push at the begining
         //we will use
@@ -257,6 +257,42 @@ router.put('/experience',[auth,[
     }
 
 
+});
+
+//@route  DELETE api/profile/experience
+//@desc   DELETE user experience
+//@access private
+
+router.delete('/experience/:exp_id',auth,async (req,res)=>{ // /experience/:exp_id same as request.getParameter(exp_id)
+    try {
+
+        //findOne function object desc= columnName:value
+        const profile = await Profile.findOne({user:req.user.id});
+
+        //experience is not an column but an array of objects. So its deletetion will be different
+        //Fisrt we need to get the requested remove experience index
+
+        //Bu using filter
+        //const removeIndex = profile.experience.filter(e => e._id==req.params.exp_id);
+
+        //By using map 
+        const removeIndex = profile.experience.map(e=>e.id).indexOf(req.params.exp_id);
+
+        //splice description = At position 2, remove 2 items: splice(2,2) //position starts from 0
+
+        profile.experience.splice(removeIndex, 1);
+
+        await profile.save();
+
+        res.json(profile);
+
+        
+
+        
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
 });
 
 
