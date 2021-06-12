@@ -301,8 +301,9 @@ router.delete('/experience/:exp_id',auth,async (req,res)=>{ // /experience/:exp_
 //@access private
 
 router.put('/education',[auth,[
-    check('title','Title is required').not().isEmpty(),
-    check('company','Company is required').not().isEmpty(),
+    check('school','School is required').not().isEmpty(),
+    check('degree','Degree is required').not().isEmpty(),
+    check('fieldofstudy','field of study is required').not().isEmpty(),
     check('from','From date is required').not().isEmpty()
 ]], async (req,res) => {// 2nd parameter is always middleware.To use multiple middleware we will use []
 
@@ -313,36 +314,37 @@ router.put('/education',[auth,[
     }
 
     //destructure the request body
+    
 
     const {
-        title,
-        company,
-        location,
+        school,
+        degree,
+        fieldofstudy,
         from,
         to,
         current,
         description
     } = req.body;
 
-    //newExp is same as profileFields
-    const newExp = {
-            title,
-            company,
-            location,
-            from,
-            to,
-            current,
-            description
+    //newEdu is same as profileFields
+    const newEdu = {
+        school,
+        degree,
+        fieldofstudy,
+        from,
+        to,
+        current,
+        description
     };
 
     try {
 
         const profile = await Profile.findOne({user:req.user.id});//findOne function object desc= columnName:value
         
-        //profile.experience.push() we will not use it since it push at the begining
+        //profile.education.push() we will not use it since it push at the begining
         //we will use
 
-        profile.experience.unshift(newExp); //it push at the end
+        profile.education.unshift(newEdu); //it push at the end
         await profile.save();
         res.json(profile);
         
@@ -358,7 +360,7 @@ router.put('/education',[auth,[
 //@desc   DELETE user education
 //@access private
 
-router.delete('/education/:exp_id',auth,async (req,res)=>{ // /education/:exp_id same as request.getParameter(exp_id)
+router.delete('/education/:edu_id',auth,async (req,res)=>{ // /education/:edu_id same as request.getParameter(edu_id)
     try {
 
         //findOne function object desc= columnName:value
@@ -368,10 +370,10 @@ router.delete('/education/:exp_id',auth,async (req,res)=>{ // /education/:exp_id
         //Fisrt we need to get the requested remove education index
 
         //Bu using filter
-        //const removeIndex = profile.education.filter(e => e._id==req.params.exp_id);
+        //const removeIndex = profile.education.filter(e => e._id==req.params.edu_id);
 
         //By using map 
-        const removeIndex = profile.education.map(e=>e.id).indexOf(req.params.exp_id);
+        const removeIndex = profile.education.map(e=>e.id).indexOf(req.params.edu_id);
 
         //splice description = At position 2, remove 2 items: splice(2,2) //position starts from 0
 
