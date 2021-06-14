@@ -8,10 +8,10 @@ const Profile = require('../../models/Profile'); //it will gives us the whole ta
 const User = require('../../models/User');
 const Post = require('../../models/Post');
 
-//@route  POST api/posts
-//@desc   Craete a Post
-//@access private
 
+//@route  POST api/posts
+//@desc   Create a Post
+//@access private
 router.post('/',[auth,[
 
     check('text','Text is required').not().isEmpty(),
@@ -25,7 +25,8 @@ router.post('/',[auth,[
 
     try {
 
-        const user = await User.findById(req.user.id).select('-password');//its come from jwtWebtoken payload
+        const user = await User.findById(req.user.id).select('-password');//its come from req.user = decoded.user; from middleware/auth
+       
 
         const newPost = new Post({
 
@@ -52,5 +53,30 @@ router.post('/',[auth,[
     
 
 });
+
+//@route  Get api/posts
+//@desc  Get all posts
+//@access private
+
+router.get('/',auth, async (req, res) => {
+
+
+    try {
+
+
+        const posts = await Post.find().sort({ date: -1 }); //for getting the latest posts first.. for ascending use date : 1  and here date is column name in our table
+
+        res.json(posts);
+        
+    } catch (error) {
+
+        console.error(error.message);
+        res.status(500).send('Server Error');
+        
+    }
+
+});
+
+
 
 module.exports = router
