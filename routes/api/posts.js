@@ -207,7 +207,7 @@ router.put('/unlike/:id',auth, async (req, res) => {
 
         const removeIndex = post.likes.map(like=>like.user.toString()).indexOf(req.user.id);
 
-        console.log(removeIndex)
+        //console.log(removeIndex)
 
         //splice description = At position 2, remove 2 items: splice(2,2) //position starts from 0
 
@@ -225,6 +225,55 @@ router.put('/unlike/:id',auth, async (req, res) => {
         }
         res.status(500).send('Server Error');
     }
+});
+
+//@route  POST api/posts/comment/:id
+//@desc   comment on a Post
+//@access private
+router.post('/comment/:id',[auth,[
+
+    check('text','Text is required').not().isEmpty(),
+]],async (req,res) => { //2nd parameter is always middleware.To use multiple middleware we will use []
+
+    const errors = validationResult(req);
+
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors:errors.array()});
+    }
+
+    try {
+
+        const user = await User.findById(req.user.id).select('-password');//its come from req.user = decoded.user; from middleware/auth
+       
+        const post = await Post.findById(req.user.id);
+
+        
+        const newComment = {
+
+            text:req.body.text,
+            name:user.name,
+            avatar:user.avatar,
+            user:req.user.id
+
+        };
+
+        //understand the save function very well
+
+        post.comments.unshift(newComment);
+
+        await post.save();
+        res.json(post.comments);
+
+        
+    } catch (err) {
+
+        console.error(err.message);
+        res.status(500).send('Server Error');
+        
+    }
+
+    
+
 });
 
 
