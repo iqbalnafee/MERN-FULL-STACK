@@ -245,7 +245,7 @@ router.post('/comment/:id',[auth,[
 
         const user = await User.findById(req.user.id).select('-password');//its come from req.user = decoded.user; from middleware/auth
        
-        const post = await Post.findById(req.user.id);
+        const post = await Post.findById(req.params.id);
 
         
         const newComment = {
@@ -262,6 +262,62 @@ router.post('/comment/:id',[auth,[
         post.comments.unshift(newComment);
 
         await post.save();
+        res.json(post.comments);
+
+        
+    } catch (err) {
+
+        console.error(err.message);
+        res.status(500).send('Server Error');
+        
+    }
+
+    
+
+});
+
+//@route  DELETE api/posts/comment/:id/:comment_id
+//@desc   delete comment of a Post
+//@access private
+router.delete('/comment/:id/:comment_id',[auth],async (req,res) => { 
+
+    
+    try {
+
+        
+       
+        const post = await Post.findById(req.params.id);
+
+        //pull out the comment
+        const comment = await post.comments.find(comment => comment.id === req.params.comment_id);
+        
+        //check if the comment exists
+        if(!comment){
+            return res.status(404).json({msg: "Comment does not exists"});
+        }
+
+        //check the user who made the deletion actually make this comment
+
+        if(comment.user.toString() !== req.user.id){
+            return res.status(401).json({msg: "User not authorized"});
+        }
+
+        //get remove index
+
+        const removeIndex = post.comments.map(comment=>comment.user.toString()).indexOf(req.user.id);
+
+        //same thing by comment id
+        //const removeIndex = profile.comments.map(comment=>comment.id).indexOf(req.params.comment_id);
+
+        //console.log(removeIndex)
+
+        //splice description = At position 2, remove 2 items: splice(2,2) //position starts from 0
+
+        post.comments.splice(removeIndex, 1);
+
+        
+        await post.save();
+
         res.json(post.comments);
 
         
