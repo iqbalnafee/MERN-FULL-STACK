@@ -1,0 +1,24 @@
+1. npx create-react-app clientside // will create a react app folder name client not globally
+
+2. cd clientside
+
+3a). npm start // to run react dev server
+
+3b). cd ..
+
+4. // If we use step's no.3 command then we need to terminal two run both client and server. To avoid this we will use the following commands 
+
+5. "client": "npm start --prefix clientside" in server's folder package.json file in scripts. // this will run react app inside clientside folder
+
+
+6. "dev":"concurrently \"npm run server\" \"npm run client\" " //same place as step 5 to run both the client and server
+
+7. npm run dev // in main folder which is DEVCONNECTOR . To run both backend and frontend
+
+8. cd clientside
+
+9. npm i axios react-router-dom redux react-redux redux-thunk redux-devtools-extension moment react-moment // to install some react modules
+
+10. cd ..
+
+11. // we dont want to write every time axios.get(http://localhost:5000/api/profile). instead we want to write (api/profile). For this we need to create a proxy in clientside package.json file
