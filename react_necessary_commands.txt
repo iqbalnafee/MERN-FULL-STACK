@@ -22,3 +22,15 @@
 10. cd ..
 
 11. // we dont want to write every time axios.get(http://localhost:5000/api/profile). instead we want to write (api/profile). For this we need to create a proxy in clientside package.json file
+
+12. Delete index.css,app.test.js,logo.svg in clientside src folder.
+
+13. Then go to index.js to remove reference of these deleted files.
+
+14. Then we go to App.js file 
+
+15. Add font  awesome cdn in index.html
+
+16. in src folder create components/layout/Navbar.js
+
+17. rafc shortcut for functional components (need to install es7 react-redux snippet extension)
