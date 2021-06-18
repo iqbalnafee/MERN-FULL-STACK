@@ -1,5 +1,9 @@
 import React,{Fragment,useState} from 'react'
 
+//we will use reduxe for backend request
+//but for testing purpose we will do this followings
+import axios from 'axios';
+
 const Register = () => {
 
 
@@ -18,13 +22,30 @@ const Register = () => {
 
     // {} after = means variable
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
         if(password!==password2){ //password same as formaData.password
             console.log('Password mismatch');
         }
         else{
-            console.log(formData);
+            //console.log(formData);
+            const newUser = {
+                name,
+                email,
+                password
+            }
+            try {
+                const config = {
+                    headers:{
+                        'Content-Type':'application/json'
+                    }
+                }
+                const body = JSON.stringify(newUser); //make newUser as a json object
+                const res = await axios.post('api/users',body,config); // api/users server side or backend's routes/api/users.js post request
+                console.log(res.data);
+            } catch (error) {
+                console.error(error.response.data);
+            }
         }
     }
 
