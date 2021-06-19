@@ -1,4 +1,4 @@
-import { craeteStore,applyMiddleware } from 'redux'; // we implement thunk as middleware so we import applyMiddleware
+import { createStore,applyMiddleware } from 'redux'; // we implement thunk as middleware so we import applyMiddleware
 
 import {composeWithDevTools} from 'redux-devtools-extension';
 import thunk from 'redux-thunk'; //thunk is our moddleware

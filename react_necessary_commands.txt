@@ -38,3 +38,5 @@
 18. We must enclose <Route /> within <BrowserRoute></BrowserRoute>
 
 19. To implement redux, we create store.js, inside clientside's src folder 
+
+20. To use this store we need to edit our App.js

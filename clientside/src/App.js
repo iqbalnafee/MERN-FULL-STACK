@@ -7,31 +7,42 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
 
+//Redux
+import { Provider } from 'react-redux'; //this will connect both react and redux.
+import  store  from './store';
+
 const App = () => {
   return (
-    <Fragment>
-      <Navbar />
 
-      
-      <Router>
+    //using provider, all the components that we create, can access our app level state through redux
 
-        <Route exact path='/' component={Landing} />
+    <Provider store={store}>
+    <Router>
+      <Fragment>
+        <Navbar />
 
-        <Switch className="container">
+        
+        
 
-          <Route exact path='/login' component={Login} />
+          <Route exact path='/' component={Landing} />
 
-          <Route exact path='/register' component={Register} />
+          <Switch className="container">
 
-        </Switch>
+            <Route exact path='/login' component={Login} />
+
+            <Route exact path='/register' component={Register} />
+
+          </Switch>
+
+          
 
         
 
-      </Router>
 
-
-      
-    </Fragment>
+        
+      </Fragment>
+    </Router>
+    </Provider>
   );
 }
 
