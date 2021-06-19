@@ -36,3 +36,5 @@
 17. rafce shortcut for functional components (need to install es7 react-redux snippet extension)
 
 18. We must enclose <Route /> within <BrowserRoute></BrowserRoute>
+
+19. To implement redux, we create store.js, inside clientside's src folder 
