@@ -1,0 +1,29 @@
+1. Redux is a state manager and it is use for larger applications
+
+2. It is not the only option. Instead of it, we can use context api built in react.
+
+3. Register, login are component level state and post,profile are app level state and we can access app level state from any component level state.
+
+4. And thats where redux copmes in. It gives us app level state.
+
+5. So we can think redux as a cloud which floats over our application that we can submit actions through events and we can then get data to fall down into any component
+
+6. Lets consider a exmaple of profile:
+
+    6.a) Profile data we get from the server and that's gonna be put into what's called a store a redux store. So  we can think the redux store as a cloud
+
+    6.b) And from any component we can call  an action that will do something
+
+    6.c) Lets we want to update our profile
+
+    6.d) So we will make a request to the server, make the update on the server on the database
+
+    6.e) We got a response and then what we want to do is we want to update our user interface
+
+    6.f) So anything we need to update, any component. That's happen what is through we called reducer which is just a function that takes in what we called in an action
+
+    6.g) We can dispatch an action to the reducer and then reducer decides how to handle the state and how to pass it down to the components in the UI
+
+    6.h) And it will update any components that use that piece of the state
+
+    6.i) This prevents us from having to pass things around from components to components without using  a state manager
