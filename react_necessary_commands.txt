@@ -40,3 +40,9 @@
 19. To implement redux, we create store.js, inside clientside's src folder 
 
 20. To use this store we need to edit our App.js
+
+21. rafcp for functional component with props types
+
+22. impt for importing props types
+
+23. ptfr = PropTypes.func.isRequired, 

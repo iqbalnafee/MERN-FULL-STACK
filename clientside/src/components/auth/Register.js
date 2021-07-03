@@ -1,8 +1,14 @@
+// we are gonna connect to this component to redux. we are gonna do this by connect
+import { connect } from 'react-redux';
+import { setAlert } from '../../actions/alert'; // whenever we bring an action we need to pass it into connect()
+
+
 import React,{Fragment,useState} from 'react'
+import PropTypes from 'prop-types'
 
 
 
-const Register = () => {
+const Register = (props) => {
 
 
     const [formData,setFormData] = useState({
@@ -23,7 +29,10 @@ const Register = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         if(password!==password2){ //password same as formaData.password
-            console.log('Password mismatch');
+            //console.log('mismatch');
+            props.setAlert('Password mismatch','danger'); // this will gonna go to connect() -> then action's alert -> then dispatch to reducer's alert
+
+            // to view the alert we need to create alert component
         }
         else{
             console.log("SUCCESS");
@@ -83,6 +92,10 @@ const Register = () => {
             </p>
         </Fragment>
     )
+};
+
+Register.propTypes = {
+    setAlert: PropTypes.func.isRequired, 
 }
 
-export default Register;
+export default connect(null, { setAlert }) (Register); //connect has two parameters. 1st is any state we want to map.. lets say we get a state from alert. 2nd one is an object with any action we want to use.

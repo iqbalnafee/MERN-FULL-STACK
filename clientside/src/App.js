@@ -6,6 +6,7 @@ import Landing from './components/layout/Landing';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import Alert from './components/layout/Alert';
 
 //Redux
 import { Provider } from 'react-redux'; //this will connect both react and redux.
@@ -25,6 +26,8 @@ const App = () => {
         
 
           <Route exact path='/' component={Landing} />
+
+          <Alert />
 
           <Switch className="container">
 

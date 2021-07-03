@@ -1,0 +1,11 @@
+1. In Register.js we brought in import { connect } from 'react-redux'; so we can work with redux
+
+2. import { setAlert } from '../../actions/alert'; we also brought in setAlert action
+
+3. export default connect(null, { setAlert }) (Register); connect has two parameters. 1st is any state we want to map.. lets say we get a state from alert. 2nd one is an object with any action we want to use. 
+
+4. setAlert is also available in props, const Register = (props) => {}. And we call it: props.setAlert('Password mismatch','danger'); when password do not match
+
+5. Then we go the alert.js in action folder and
+
+6. this setAlert function in action folder's alert.js will dispatch this to the reducer's alert.js
